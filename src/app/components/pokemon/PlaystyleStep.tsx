@@ -1,0 +1,148 @@
+'use client';
+
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../ui/card';
+import { Button } from '../ui/button';
+import { usePlaystyles, useForm as useFormContext } from '../../contexts/FormContext';
+import { playstyles, playstyleCategories, getPlaystylesByCategory } from '../../data/formats-and-styles';
+import { playstyleSchema, PlaystyleFormData } from '../../lib/validations/schemas';
+import { cn } from '../../lib/utils';
+
+export function PlaystyleStep() {
+  const { nextStep, prevStep } = useFormContext();
+  const { playstyles: selectedPlaystyles, setPlaystyles } = usePlaystyles();
+
+  const form = useForm<PlaystyleFormData>({
+    resolver: zodResolver(playstyleSchema),
+    defaultValues: {
+      playstyles: selectedPlaystyles
+    }
+  });
+
+  const watchedPlaystyles = form.watch('playstyles') || [];
+
+  const onSubmit = (data: PlaystyleFormData) => {
+    setPlaystyles(data.playstyles);
+    nextStep();
+  };
+
+  const togglePlaystyle = (playstyleId: string) => {
+    // Only allow one selection, so replace the current selection
+    form.setValue('playstyles', [playstyleId]);
+  };
+
+  return (
+    <div className="max-w-6xl mx-auto px-4 py-12">
+      <Card>
+        <CardHeader>
+          <CardTitle>Select Team Playstyle</CardTitle>
+          <CardDescription>
+            Choose one playstyle that defines your team&apos;s strategy. This will guide how the AI builds your team.
+          </CardDescription>
+        </CardHeader>
+
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <CardContent className="space-y-8 pt-8">
+            {playstyleCategories.map((category) => {
+              const categoryPlaystyles = getPlaystylesByCategory(category.id);
+              
+              return (
+                <div key={category.id} className="space-y-4">
+                  <div>
+                    <h3 className="text-lg font-semibold text-white">{category.name}</h3>
+                    <p className="text-sm text-gray-600">{category.description}</p>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {categoryPlaystyles.map((playstyle) => {
+                      const isSelected = watchedPlaystyles.includes(playstyle.id);
+                      
+                      return (
+                        <button
+                          key={playstyle.id}
+                          type="button"
+                          onClick={() => togglePlaystyle(playstyle.id)}
+                          className={cn(
+                            'relative flex cursor-pointer rounded-lg border p-4 text-left transition-all hover:bg-gray-50 hover:text-gray-900',
+                            isSelected
+                              ? 'border-primary bg-primary/5 ring-1 ring-primary'
+                              : 'border-gray-200'
+                          )}
+                        >
+                          <div className="flex flex-1 flex-col">
+                            <div className="flex items-center space-x-3">
+                              <div className={cn(
+                                'h-4 w-4 rounded-full border-2 flex items-center justify-center',
+                                isSelected
+                                  ? 'border-primary bg-primary'
+                                  : 'border-gray-300'
+                              )}>
+                                {isSelected && (
+                                  <div className="h-2 w-2 rounded-full bg-white"></div>
+                                )}
+                              </div>
+                              <h4 className="font-medium text-white">{playstyle.name}</h4>
+                            </div>
+                            
+                            <p className="mt-2 text-sm text-gray-200">
+                              {playstyle.description}
+                            </p>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+
+            {form.formState.errors.playstyles && (
+              <p className="text-sm text-red-600">
+                {form.formState.errors.playstyles.message}
+              </p>
+            )}
+
+            {/* Selected Playstyle Summary */}
+            {watchedPlaystyles.length > 0 && (
+              <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <h4 className="text-sm font-medium text-blue-900 mb-2">
+                  Selected Playstyle
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {watchedPlaystyles.map((styleId) => {
+                    const style = playstyles.find(p => p.id === styleId);
+                    return style ? (
+                      <span
+                        key={styleId}
+                        className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
+                      >
+                        {style.name}
+                      </span>
+                    ) : null;
+                  })}
+                </div>
+                <p className="text-xs text-blue-700 mt-2">
+                  The AI will create a team focused on this strategic approach.
+                </p>
+              </div>
+            )}
+          </CardContent>
+
+          <CardFooter className="flex justify-between">
+            <Button type="button" variant="outline" onClick={prevStep}>
+              Back
+            </Button>
+            <Button 
+              type="submit" 
+              disabled={watchedPlaystyles.length === 0}
+              className="min-w-[120px]"
+            >
+              Generate Team
+            </Button>
+          </CardFooter>
+        </form>
+      </Card>
+    </div>
+  );
+}
