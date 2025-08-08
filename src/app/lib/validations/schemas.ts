@@ -23,14 +23,14 @@ export const battleFormatSchema = z.object({
 
 // Playstyle selection validation
 export const playstyleSchema = z.object({
-  playstyles: z.array(z.string()).length(1, 'Please select exactly one playstyle'),
+  playstyles: z.array(z.string()).min(1, 'Please select at least one playstyle').max(3, 'Please select at most 3 playstyles'),
 });
 
 // Team generation request validation
 export const teamRequestSchema = z.object({
   pokemonNames: z.array(z.string()).min(1, 'At least one Pokemon is required'),
   battleFormat: z.string().min(1, 'Battle format is required'),
-  playstyles: z.array(z.string()).length(1, 'Exactly one playstyle is required'),
+  playstyles: z.array(z.string()).min(1, 'At least one playstyle is required').max(3, 'At most 3 playstyles are allowed'),
 });
 
 // Complete form validation

@@ -1,10 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from './ui/card';
 import { Button } from './ui/button';
-import { Zap, Users, Trophy, Sparkles } from 'lucide-react';
+import { Zap, Users, Trophy } from 'lucide-react';
 
 interface LandingPageProps {
   onGetStarted: () => void;

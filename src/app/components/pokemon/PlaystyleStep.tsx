@@ -28,17 +28,25 @@ export function PlaystyleStep() {
   };
 
   const togglePlaystyle = (playstyleId: string) => {
-    // Only allow one selection, so replace the current selection
-    form.setValue('playstyles', [playstyleId]);
+    const currentPlaystyles = watchedPlaystyles;
+    
+    if (currentPlaystyles.includes(playstyleId)) {
+      // Remove if already selected
+      form.setValue('playstyles', currentPlaystyles.filter(id => id !== playstyleId));
+    } else if (currentPlaystyles.length < 3) {
+      // Add if under the limit of 3
+      form.setValue('playstyles', [...currentPlaystyles, playstyleId]);
+    }
+    // If already at 3 selections, do nothing (don't add more)
   };
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-12">
       <Card>
         <CardHeader>
-          <CardTitle>Select Team Playstyle</CardTitle>
+          <CardTitle>Select Team Playstyles</CardTitle>
           <CardDescription>
-            Choose one playstyle that defines your team&apos;s strategy. This will guide how the AI builds your team.
+            Choose up to 3 playstyles that define your team&apos;s strategy. This will guide how the AI builds your team with multiple strategic approaches.
           </CardDescription>
         </CardHeader>
 
@@ -63,23 +71,29 @@ export function PlaystyleStep() {
                           key={playstyle.id}
                           type="button"
                           onClick={() => togglePlaystyle(playstyle.id)}
+                          disabled={!isSelected && watchedPlaystyles.length >= 3}
                           className={cn(
                             'relative flex cursor-pointer rounded-lg border p-4 text-left transition-all hover:bg-gray-50 hover:text-gray-900',
                             isSelected
                               ? 'border-primary bg-primary/5 ring-1 ring-primary'
-                              : 'border-gray-200'
+                              : 'border-gray-200',
+                            !isSelected && watchedPlaystyles.length >= 3
+                              ? 'opacity-50 cursor-not-allowed'
+                              : ''
                           )}
                         >
                           <div className="flex flex-1 flex-col">
                             <div className="flex items-center space-x-3">
                               <div className={cn(
-                                'h-4 w-4 rounded-full border-2 flex items-center justify-center',
+                                'h-4 w-4 rounded border-2 flex items-center justify-center',
                                 isSelected
                                   ? 'border-primary bg-primary'
                                   : 'border-gray-300'
                               )}>
                                 {isSelected && (
-                                  <div className="h-2 w-2 rounded-full bg-white"></div>
+                                  <svg className="h-3 w-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                  </svg>
                                 )}
                               </div>
                               <h4 className="font-medium text-white">{playstyle.name}</h4>
@@ -103,11 +117,11 @@ export function PlaystyleStep() {
               </p>
             )}
 
-            {/* Selected Playstyle Summary */}
+            {/* Selected Playstyles Summary */}
             {watchedPlaystyles.length > 0 && (
               <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                 <h4 className="text-sm font-medium text-blue-900 mb-2">
-                  Selected Playstyle
+                  Selected Playstyles ({watchedPlaystyles.length}/3)
                 </h4>
                 <div className="flex flex-wrap gap-2">
                   {watchedPlaystyles.map((styleId) => {
@@ -123,7 +137,8 @@ export function PlaystyleStep() {
                   })}
                 </div>
                 <p className="text-xs text-blue-700 mt-2">
-                  The AI will create a team focused on this strategic approach.
+                  The AI will create a team that combines these strategic approaches.
+                  {watchedPlaystyles.length < 3 && ` You can select ${3 - watchedPlaystyles.length} more playstyle${3 - watchedPlaystyles.length === 1 ? '' : 's'}.`}
                 </p>
               </div>
             )}
