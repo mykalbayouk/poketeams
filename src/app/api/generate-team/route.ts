@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { teamRequestSchema } from '../../lib/validations/schemas';
 import { battleFormats, playstyles } from '../../data/formats-and-styles';
+import { teamGenerationLimit, getUserIdentifier } from '../../lib/rate-limit';
 
 // Initialize OpenAI client
 const openai = new OpenAI({
@@ -12,16 +13,39 @@ export async function POST(request: NextRequest) {
   console.log('Team generation request received');
   
   try {
-    // Parse and validate request body
-    const body = await request.json();
+    // 1. RATE LIMITING CHECK (before any expensive operations)
+    const userIdentifier = getUserIdentifier(request);
+    console.log(`Checking rate limit for user: ${userIdentifier}`);
     
+    const { success, limit, reset, remaining } = await teamGenerationLimit.limit(userIdentifier);
+    
+    if (!success) {
+      console.log(`Rate limit exceeded for user: ${userIdentifier}`);
+      
+      const hoursUntilReset = Math.round((reset - Date.now()) / 1000 / 60 / 60);
+      const resetTime = new Date(reset);
+      
+      return NextResponse.json({
+        error: "Daily limit exceeded",
+        message: `You can only generate ${limit} teams per day. Your limit resets at ${resetTime.toLocaleTimeString()} (in ${hoursUntilReset} hours).`,
+        remaining: 0,
+        resetTime: resetTime.toISOString(),
+        limit,
+        rateLimited: true
+      }, { status: 429 });
+    }
+    
+    console.log(`Rate limit OK for user: ${userIdentifier}. ${remaining} requests remaining.`);
+
+    // 2. VALIDATE REQUEST DATA
+    const body = await request.json();
     const validatedData = teamRequestSchema.parse(body);
 
     const { pokemonNames, battleFormat, playstyles: selectedPlaystyles } = validatedData;
     
     console.log(`Request: ${pokemonNames.length} Pokemon, ${battleFormat}, ${selectedPlaystyles.length} playstyles`);
 
-    // Get format and playstyle details for context
+    // 3. PREPARE AI PROMPT (existing code)
     const formatDetails = battleFormats.find(f => f.id === battleFormat);
     const playstyleDetails = selectedPlaystyles.map(id => 
       playstyles.find(p => p.id === id)
@@ -102,7 +126,7 @@ Be sure to double check all pokemon are from ONLY the provided list, and that th
 
     console.log('Sending request to OpenAI...');
     
-    // Make the API call to OpenAI
+    // 4. MAKE AI REQUEST (existing code)
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o',
       messages: [
@@ -142,13 +166,22 @@ Be sure to double check all pokemon are from ONLY the provided list, and that th
     
     console.log('Team generated successfully');
     
+    // 5. RETURN SUCCESS WITH RATE LIMIT INFO
+    console.log(`Team generated successfully for user: ${userIdentifier}. ${remaining - 1} requests remaining.`);
+    
     // Return successful response
     return NextResponse.json({
       success: true,
       showdownText,
       strategy,
       leadPokemon: 'See strategy guide',
-      winConditions: ['See strategy guide for detailed win conditions']
+      winConditions: ['See strategy guide for detailed win conditions'],
+      // Include rate limit info for frontend
+      rateLimit: {
+        remaining: remaining - 1,
+        limit,
+        resetTime: new Date(reset).toISOString()
+      }
     });
 
   } catch (error) {

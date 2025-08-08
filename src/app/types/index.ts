@@ -18,6 +18,17 @@ export interface TeamResponse {
   winConditions: string[];
   success: boolean;
   error?: string;
+  // Rate limiting fields
+  message?: string;
+  remaining?: number;
+  resetTime?: string;
+  limit?: number;
+  rateLimited?: boolean;
+  rateLimit?: {
+    remaining: number;
+    limit: number;
+    resetTime: string;
+  };
 }
 
 export interface BattleFormat {

@@ -91,6 +91,19 @@ export function TeamGenerationStep() {
 
       if (!response.ok) {
         console.error('TeamGenerationStep - Response not OK:', response.status);
+        
+        // Handle rate limiting specifically  
+        if (response.status === 429 && data.rateLimited) {
+          const resetTime = data.resetTime ? new Date(data.resetTime) : new Date();
+          const timeString = resetTime.toLocaleString();
+          
+          throw new Error(
+            `${data.message}\n\n` +
+            `Your daily limit resets at ${timeString}.\n` +
+            `This helps us manage server costs and ensure fair access for everyone.`
+          );
+        }
+        
         throw new Error(data.error || 'Failed to generate team');
       }
 
@@ -98,6 +111,11 @@ export function TeamGenerationStep() {
         // Complete the progress
         clearInterval(progressInterval);
         setProgress(100);
+        
+        // Optional: Show remaining count
+        if (data.rateLimit) {
+          console.log(`Generation successful. ${data.rateLimit.remaining} attempts remaining today.`);
+        }
         
         setResult(data);
         // Note: nextStep() will be called automatically by useEffect when result is set
