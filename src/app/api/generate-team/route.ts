@@ -41,7 +41,7 @@ For each Pokemon in the user's list, you have access to all their data including
 - Current meta viability and usage statistics
 - Type effectiveness and team synergy
 
-Please select exactly 6 Pokemon from the provided list and generate the team in Pokemon Showdown format with exact specifications:
+Please select exactly 6 Pokemon from ONLY the provided list, do not choose pokemon outside the list, and generate the team in Pokemon Showdown format with exact specifications:
 - Complete movesets with 4 moves each
 - Appropriate items for each Pokemon
 - Optimal abilities (including hidden abilities if viable)
@@ -73,11 +73,11 @@ Generate a balanced team that:
 Provide your response in the following format:
 
 TEAM:
-[Complete Pokemon Showdown format text for all 6 Pokemon, each separated by two line breaks]
+[Complete Pokemon Showdown format text for all 6 Pokemon separated with newlines]
 
 STRATEGY:
 ## Lead Pokemon
-[Recommended lead Pokemon name]
+[Recommended lead Pokemon name, if doubles choose 2 leads]
 
 ## Team Overview
 [Brief description of the team's core strategy and how it implements the selected playstyles]
@@ -85,8 +85,6 @@ STRATEGY:
 ## Win Conditions
 - [Primary win condition 1]
 - [Primary win condition 2] 
-- [Primary win condition 3]
-- [Primary win condition 4]
 
 ## Key Synergies
 [Explain important Pokemon interactions and combos]
@@ -100,7 +98,7 @@ STRATEGY:
 - [Specific tip 3 for playing this team effectively]
 - [Specific tip 4 for playing this team effectively]
 
-Remember to only use Pokemon from the provided list and ensure all specifications are legal and optimal for competitive play.`;
+Be sure to double check all pokemon are from ONLY the provided list, and that the team is legal and complete with no missing moves, items, or abilities.`;
 
     console.log('Sending request to OpenAI...');
     
