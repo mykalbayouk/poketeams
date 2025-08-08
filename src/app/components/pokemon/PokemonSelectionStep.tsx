@@ -78,7 +78,7 @@ export function PokemonSelectionStep() {
                 onChange={handleUseAll}
               />
               <label htmlFor="useAll" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                Use all available Pokemon ({pokemonList.length} Pokemon)
+                Use List of Highest Rated Competitive Pokemon ({pokemonList.length} Pokemon)
               </label>
             </div>
 
@@ -126,7 +126,7 @@ export function PokemonSelectionStep() {
                   {finalPokemonList.length > 0 ? (
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                       {finalPokemonList.map((pokemon, index) => (
-                        <div key={index} className="text-sm p-1 bg-gray-50 rounded">
+                        <div key={index} className="text-sm p-2 bg-gray-100 text-gray-800 rounded border">
                           {pokemon}
                         </div>
                       ))}

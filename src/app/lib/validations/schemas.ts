@@ -2,9 +2,19 @@ import { z } from 'zod';
 
 // Pokemon selection validation
 export const pokemonSelectionSchema = z.object({
-  pokemonInput: z.string().min(1, 'Please enter at least one Pokemon name'),
+  pokemonInput: z.string(),
   useAllAvailable: z.boolean().default(false),
-});
+}).refine(
+  (data) => {
+    // If useAllAvailable is true, pokemonInput can be empty
+    // If useAllAvailable is false, pokemonInput must have content
+    return data.useAllAvailable || data.pokemonInput.trim().length > 0;
+  },
+  {
+    message: 'Please enter at least one Pokemon name or select "Use all available Pokemon"',
+    path: ['pokemonInput'],
+  }
+);
 
 // Battle format validation
 export const battleFormatSchema = z.object({
