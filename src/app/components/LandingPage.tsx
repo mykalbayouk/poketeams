@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from './ui/card';
 import { Button } from './ui/button';
 import { Zap, Users, Trophy, Sparkles } from 'lucide-react';
@@ -49,7 +50,37 @@ IVs: 0 Atk
         <div className="text-center max-w-4xl mx-auto">
           <div className="flex justify-center mb-6">
             <div className="bg-primary/10 p-4 rounded-full">
-              <Sparkles className="h-12 w-12 text-primary" />
+              <svg width="84" height="84" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-32 w-32">
+            
+                {/* Main pokeball - smaller ball only */}
+                <circle cx="32" cy="32" r="20" fill="#1E40AF"/>
+                <path d="M 12 32 A 20 20 0 0 1 52 32 Z" fill="#E5E7EB"/>
+                <line x1="12" y1="32" x2="52" y2="32" stroke="#000000" strokeWidth="2"/>
+                
+                {/* Center button */}
+                <circle cx="32" cy="32" r="4" fill="#E5E7EB" stroke="#000000" strokeWidth="1"/>
+                <circle cx="32" cy="32" r="2.5" fill="#1E40AF"/>
+                
+                {/* Six dots around the pokeball - labeled positions */}
+                <circle cx="11" cy="17" r="1.5" fill="#60A5FA"/>
+                {/* <text x="11" y="22" text-anchor="middle" font-size="4" fill="#60A5FA">TL</text> */}
+                
+                <circle cx="54" cy="17" r="1.5" fill="#60A5FA"/>
+                {/* <text x="54" y="22" text-anchor="middle" font-size="4" fill="#60A5FA">TR</text> */}
+                
+                <circle cx="32" cy="7" r="1.5" fill="#60A5FA"/>
+                {/* <text x="32" y="7" text-anchor="middle" font-size="4" fill="#60A5FA">T</text> */}
+                
+                <circle cx="54" cy="47" r="1.5" fill="#60A5FA"/>
+                {/* <text x="54" y="42" text-anchor="middle" font-size="4" fill="#60A5FA">BR</text> */}
+                
+                <circle cx="11" cy="47" r="1.5" fill="#60A5FA"/>
+                {/* <text x="11" y="42" text-anchor="middle" font-size="4" fill="#60A5FA">BL</text> */}
+                
+                <circle cx="32" cy="57" r="1.5" fill="#60A5FA"/>
+                {/* <text x="32" y="59" text-anchor="middle" font-size="4" fill="#60A5FA">B</text> */}
+
+              </svg>
             </div>
           </div>
           
@@ -204,7 +235,27 @@ IVs: 0 Atk
             </CardHeader>
             <CardContent>
               <Button size="lg" onClick={onGetStarted} className="text-lg px-8 py-6">
-                <Sparkles className="mr-2 h-5 w-5" />
+                <svg width="20" height="20" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2 h-5 w-5">
+                  {/* Background circle */}
+                  <circle cx="24" cy="24" r="22" fill="currentColor" stroke="currentColor" strokeWidth="2"/>
+                  
+                  {/* Main pokeball */}
+                  <circle cx="24" cy="24" r="18" fill="#1E40AF"/>
+                  <path d="M 6 24 A 18 18 0 0 1 42 24 Z" fill="#E5E7EB"/>
+                  <line x1="6" y1="24" x2="42" y2="24" stroke="currentColor" strokeWidth="2"/>
+                  
+                  {/* Center button */}
+                  <circle cx="24" cy="24" r="4" fill="#E5E7EB" stroke="currentColor" strokeWidth="1"/>
+                  <circle cx="24" cy="24" r="2.5" fill="#1E40AF"/>
+                  
+                  {/* Six dots around the pokeball */}
+                  <circle cx="12" cy="12" r="1.5" fill="#60A5FA"/>
+                  <circle cx="36" cy="12" r="1.5" fill="#60A5FA"/>
+                  <circle cx="42" cy="24" r="1.5" fill="#60A5FA"/>
+                  <circle cx="36" cy="36" r="1.5" fill="#60A5FA"/>
+                  <circle cx="12" cy="36" r="1.5" fill="#60A5FA"/>
+                  <circle cx="6" cy="24" r="1.5" fill="#60A5FA"/>
+                </svg>
                 Generate Your First Team
               </Button>
               <p className="text-sm text-muted-foreground mt-4">

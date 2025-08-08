@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Pokemon Team Builder - AI-Powered Competitive Teams",
+  title: "PokeTeamAI",
   description: "Generate competitive Pokemon teams instantly with AI. No signup required. Get Pokemon Showdown format teams with expert strategy guides for any battle format.",
   keywords: "pokemon, team builder, competitive, AI, showdown, strategy, VGC, OU, doubles, singles",
   authors: [{ name: "Pokemon Team Builder" }],
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     telephone: false,
   },
   openGraph: {
-    title: "Pokemon Team Builder - AI-Powered Competitive Teams",
+    title: "PokeTeamAI",
     description: "Generate competitive Pokemon teams instantly with AI. No signup required.",
     type: "website",
     locale: "en_US",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Pokemon Team Builder - AI-Powered Competitive Teams",
+    title: "PokeTeamAI",
     description: "Generate competitive Pokemon teams instantly with AI. No signup required.",
   },
   robots: {
