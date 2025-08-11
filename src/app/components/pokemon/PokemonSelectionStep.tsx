@@ -73,7 +73,7 @@ export function PokemonSelectionStep() {
               <input
                 type="checkbox"
                 id="useAll"
-                className="h-4 w-4 rounded border-gray-300"
+                className="h-4 w-4 rounded border-border"
                 checked={watchedUseAll}
                 onChange={handleUseAll}
               />
@@ -95,7 +95,7 @@ export function PokemonSelectionStep() {
                   {...form.register('pokemonInput')}
                 />
                 {form.formState.errors.pokemonInput && (
-                  <p className="text-sm text-red-600">
+                  <p className="text-sm text-destructive">
                     {form.formState.errors.pokemonInput.message}
                   </p>
                 )}
@@ -126,7 +126,7 @@ export function PokemonSelectionStep() {
                   {finalPokemonList.length > 0 ? (
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                       {finalPokemonList.map((pokemon, index) => (
-                        <div key={index} className="text-sm p-2 bg-gray-100 text-gray-800 rounded border">
+                        <div key={index} className="text-sm p-2 bg-muted text-muted-foreground rounded border">
                           {pokemon}
                         </div>
                       ))}

@@ -58,7 +58,7 @@ export function TeamResultsStep() {
               <p className="text-muted-foreground">No team data available.</p>
               
               {/* Debug section for development */}
-              <div className="text-xs text-gray-500 space-y-2 max-w-md mx-auto">
+              <div className="text-xs text-muted-foreground space-y-2 max-w-md mx-auto">
                 <p>Debug Info:</p>
                 <p>• Context result: {result ? 'Available' : 'Missing'}</p>
                 <p>• Checking localStorage...</p>
@@ -188,12 +188,12 @@ export function TeamResultsStep() {
                 ref={textareaRef}
                 value={editableTeam}
                 onChange={(e) => setEditableTeam(e.target.value)}
-                className="min-h-[400px] font-mono text-sm bg-gray-900 text-gray-100 border-gray-700 focus:ring-blue-500 focus:border-blue-500"
+                className="min-h-[400px] font-mono text-sm bg-card text-card-foreground border-border focus:ring-ring focus:border-ring"
                 placeholder="Edit your team here..."
               />
             ) : (
-              <div className="bg-gray-900 rounded-md p-4">
-                <pre className="text-sm overflow-x-auto whitespace-pre-wrap font-mono text-gray-100">
+              <div className="bg-muted rounded-md p-4">
+                <pre className="text-sm overflow-x-auto whitespace-pre-wrap font-mono text-muted-foreground">
                   {cleanShowdownText(result.showdownText)}
                 </pre>
               </div>
@@ -222,20 +222,20 @@ export function TeamResultsStep() {
           </CardHeader>
 
           <CardContent>
-            <div className="prose prose-sm max-w-none prose-invert">
-              <div className="bg-gray-900 rounded-md p-6 text-gray-100">
+            <div className="prose prose-sm max-w-none">
+              <div className="bg-muted rounded-md p-6 text-muted-foreground">
                 <ReactMarkdown 
                   components={{
-                    h1: ({children}) => <h1 className="text-xl font-bold mb-4 text-white">{children}</h1>,
-                    h2: ({children}) => <h2 className="text-lg font-semibold mb-3 text-white">{children}</h2>,
-                    h3: ({children}) => <h3 className="text-base font-medium mb-2 text-white">{children}</h3>,
-                    p: ({children}) => <p className="mb-3 text-gray-100">{children}</p>,
-                    ul: ({children}) => <ul className="mb-3 ml-4 list-disc text-gray-100">{children}</ul>,
-                    ol: ({children}) => <ol className="mb-3 ml-4 list-decimal text-gray-100">{children}</ol>,
-                    li: ({children}) => <li className="mb-1 text-gray-100">{children}</li>,
-                    strong: ({children}) => <strong className="font-semibold text-white">{children}</strong>,
-                    em: ({children}) => <em className="italic text-gray-200">{children}</em>,
-                    code: ({children}) => <code className="bg-gray-800 px-1 py-0.5 rounded text-blue-300 text-sm">{children}</code>,
+                    h1: ({children}) => <h1 className="text-xl font-bold mb-4 text-foreground">{children}</h1>,
+                    h2: ({children}) => <h2 className="text-lg font-semibold mb-3 text-foreground">{children}</h2>,
+                    h3: ({children}) => <h3 className="text-base font-medium mb-2 text-foreground">{children}</h3>,
+                    p: ({children}) => <p className="mb-3 text-muted-foreground">{children}</p>,
+                    ul: ({children}) => <ul className="mb-3 ml-4 list-disc text-muted-foreground">{children}</ul>,
+                    ol: ({children}) => <ol className="mb-3 ml-4 list-decimal text-muted-foreground">{children}</ol>,
+                    li: ({children}) => <li className="mb-1 text-muted-foreground">{children}</li>,
+                    strong: ({children}) => <strong className="font-semibold text-foreground">{children}</strong>,
+                    em: ({children}) => <em className="italic text-muted-foreground">{children}</em>,
+                    code: ({children}) => <code className="bg-background px-1 py-0.5 rounded text-primary text-sm">{children}</code>,
                   }}
                 >
                   {result.strategy}

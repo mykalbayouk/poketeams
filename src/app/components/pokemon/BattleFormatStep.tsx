@@ -44,10 +44,10 @@ export function BattleFormatStep() {
                 <label
                   key={format.id}
                   className={cn(
-                    'relative flex cursor-pointer rounded-lg border p-4 transition-all hover:bg-gray-50 hover:text-gray-900',
+                    'relative flex cursor-pointer rounded-lg border p-4 transition-all hover:bg-accent hover:text-accent-foreground',
                     selectedFormat === format.id
                       ? 'border-primary bg-primary/5 ring-1 ring-primary'
-                      : 'border-gray-200'
+                      : 'border-border'
                   )}
                 >
                   <input
@@ -63,16 +63,16 @@ export function BattleFormatStep() {
                         'h-4 w-4 rounded-full border-2 flex items-center justify-center',
                         selectedFormat === format.id
                           ? 'border-primary bg-primary'
-                          : 'border-gray-300'
+                          : 'border-muted-foreground'
                       )}>
                         {selectedFormat === format.id && (
-                          <div className="h-2 w-2 rounded-full bg-white" />
+                          <div className="h-2 w-2 rounded-full bg-primary-foreground" />
                         )}
                       </div>
-                      <h3 className="font-medium text-white">{format.name}</h3>
+                      <h3 className="font-medium text-foreground">{format.name}</h3>
                     </div>
                     
-                    <p className="mt-2 text-sm text-gray-200">
+                    <p className="mt-2 text-sm text-muted-foreground">
                       {format.description}
                     </p>
                   </div>
@@ -81,21 +81,21 @@ export function BattleFormatStep() {
             </div>
 
             {form.formState.errors.battleFormat && (
-              <p className="text-sm text-red-600">
+              <p className="text-sm text-destructive">
                 {form.formState.errors.battleFormat.message}
               </p>
             )}
 
             {/* Selected Format Details */}
             {selectedFormat && (
-              <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-                <h4 className="text-sm font-medium text-green-900 mb-2">
+              <div className="mt-6 p-4 bg-accent border border-border rounded-lg">
+                <h4 className="text-sm font-medium text-accent-foreground mb-2">
                   Selected Format Details
                 </h4>
-                <p className="text-sm text-green-800">
+                <p className="text-sm text-muted-foreground">
                   {battleFormats.find(f => f.id === selectedFormat)?.description}
                 </p>
-                <p className="text-xs text-green-700 mt-2">
+                <p className="text-xs text-muted-foreground mt-2">
                   The AI will generate a team optimized for this format&apos;s metagame and rules.
                 </p>
               </div>

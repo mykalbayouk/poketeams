@@ -58,8 +58,8 @@ export function PlaystyleStep() {
               return (
                 <div key={category.id} className="space-y-4">
                   <div>
-                    <h3 className="text-lg font-semibold text-white">{category.name}</h3>
-                    <p className="text-sm text-gray-600">{category.description}</p>
+                    <h3 className="text-lg font-semibold text-foreground">{category.name}</h3>
+                    <p className="text-sm text-muted-foreground">{category.description}</p>
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -73,10 +73,10 @@ export function PlaystyleStep() {
                           onClick={() => togglePlaystyle(playstyle.id)}
                           disabled={!isSelected && watchedPlaystyles.length >= 3}
                           className={cn(
-                            'relative flex cursor-pointer rounded-lg border p-4 text-left transition-all hover:bg-gray-50 hover:text-gray-900',
+                            'relative flex cursor-pointer rounded-lg border p-4 text-left transition-all hover:bg-accent hover:text-accent-foreground',
                             isSelected
                               ? 'border-primary bg-primary/5 ring-1 ring-primary'
-                              : 'border-gray-200',
+                              : 'border-border',
                             !isSelected && watchedPlaystyles.length >= 3
                               ? 'opacity-50 cursor-not-allowed'
                               : ''
@@ -88,18 +88,18 @@ export function PlaystyleStep() {
                                 'h-4 w-4 rounded border-2 flex items-center justify-center',
                                 isSelected
                                   ? 'border-primary bg-primary'
-                                  : 'border-gray-300'
+                                  : 'border-muted-foreground'
                               )}>
                                 {isSelected && (
-                                  <svg className="h-3 w-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                  <svg className="h-3 w-3 text-primary-foreground" fill="currentColor" viewBox="0 0 20 20">
                                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                                   </svg>
                                 )}
                               </div>
-                              <h4 className="font-medium text-white">{playstyle.name}</h4>
+                              <h4 className="font-medium text-foreground">{playstyle.name}</h4>
                             </div>
                             
-                            <p className="mt-2 text-sm text-gray-200">
+                            <p className="mt-2 text-sm text-muted-foreground">
                               {playstyle.description}
                             </p>
                           </div>
@@ -112,15 +112,15 @@ export function PlaystyleStep() {
             })}
 
             {form.formState.errors.playstyles && (
-              <p className="text-sm text-red-600">
+              <p className="text-sm text-destructive">
                 {form.formState.errors.playstyles.message}
               </p>
             )}
 
             {/* Selected Playstyles Summary */}
             {watchedPlaystyles.length > 0 && (
-              <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                <h4 className="text-sm font-medium text-blue-900 mb-2">
+              <div className="mt-6 p-4 bg-accent border border-border rounded-lg">
+                <h4 className="text-sm font-medium text-accent-foreground mb-2">
                   Selected Playstyles ({watchedPlaystyles.length}/3)
                 </h4>
                 <div className="flex flex-wrap gap-2">
@@ -129,14 +129,14 @@ export function PlaystyleStep() {
                     return style ? (
                       <span
                         key={styleId}
-                        className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
+                        className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary"
                       >
                         {style.name}
                       </span>
                     ) : null;
                   })}
                 </div>
-                <p className="text-xs text-blue-700 mt-2">
+                <p className="text-xs text-muted-foreground mt-2">
                   The AI will create a team that combines these strategic approaches.
                   {watchedPlaystyles.length < 3 && ` You can select ${3 - watchedPlaystyles.length} more playstyle${3 - watchedPlaystyles.length === 1 ? '' : 's'}.`}
                 </p>

@@ -182,3 +182,20 @@ body {
   border: 1px solid var(--border);
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
+
+/* Ensure light mode readability */
+@media (prefers-color-scheme: light) {
+  .light-mode-text {
+    color: var(--foreground) !important;
+  }
+  
+  .light-mode-bg {
+    background-color: var(--background) !important;
+  }
+  
+  /* Ensure code blocks are readable in light mode */
+  pre, code {
+    background-color: var(--muted) !important;
+    color: var(--muted-foreground) !important;
+  }
+}

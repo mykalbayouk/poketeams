@@ -176,7 +176,7 @@ IVs: 0 Atk
 
         {/* How It Works */}
         <div className="max-w-4xl mx-auto mt-16">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+          <h2 className="text-3xl font-bold text-center text-foreground mb-12">
             How It Works
           </h2>
           
