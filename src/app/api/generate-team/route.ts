@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import OpenAI from 'openai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { teamRequestSchema } from '../../lib/validations/schemas';
 import { battleFormats, playstyles } from '../../data/formats-and-styles';
 import { teamGenerationLimit, getUserIdentifier } from '../../lib/rate-limit';
 
-// Initialize OpenAI client
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Initialize Google Gemini client
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY || '');
+const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
 export async function POST(request: NextRequest) {
   console.log('Team generation request received');
@@ -124,32 +123,17 @@ STRATEGY:
 
 Be sure to double check all pokemon are from ONLY the provided list, and that the team is legal and complete with no missing moves, items, or abilities.`;
 
-    console.log('Sending request to OpenAI...');
+    console.log('Sending request to Google Gemini...');
     
-    // 4. MAKE AI REQUEST (existing code)
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4o',
-      messages: [
-        {
-          role: 'system',
-          content: 'You are an expert competitive Pokemon team builder with comprehensive knowledge of all Pokemon games, movesets, abilities, and competitive strategies. Always provide complete, legal, and optimized team builds.'
-        },
-        {
-          role: 'user',
-          content: prompt
-        }
-      ],
-      temperature: 0.7,
-      max_tokens: 4000,
-    });
+    // 4. MAKE AI REQUEST
+    const result = await model.generateContent(prompt);
+    const response = result.response.text();
     
-    console.log('OpenAI response received');
-
-    const response = completion.choices[0]?.message?.content;
+    console.log('Gemini response received');
 
     if (!response) {
-      console.error('No response from OpenAI');
-      throw new Error('No response received from OpenAI');
+      console.error('No response from Gemini');
+      throw new Error('No response received from Gemini');
     }
     
     // Parse the response to extract team and strategy
@@ -193,7 +177,7 @@ Be sure to double check all pokemon are from ONLY the provided list, and that th
         return NextResponse.json(
           { 
             success: false, 
-            error: 'OpenAI API key is not configured. Please check your environment variables.' 
+            error: 'Google AI API key is not configured. Please check your environment variables.' 
           },
           { status: 500 }
         );
@@ -203,7 +187,7 @@ Be sure to double check all pokemon are from ONLY the provided list, and that th
         return NextResponse.json(
           { 
             success: false, 
-            error: 'OpenAI API quota exceeded. Please try again later.' 
+            error: 'Google AI API quota exceeded. Please try again later.' 
           },
           { status: 429 }
         );
