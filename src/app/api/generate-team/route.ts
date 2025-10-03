@@ -6,7 +6,7 @@ import { teamGenerationLimit, getUserIdentifier } from '../../lib/rate-limit';
 
 // Initialize Google Gemini client
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY || '');
-const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite' });
 
 export async function POST(request: NextRequest) {
   console.log('Team generation request received');
